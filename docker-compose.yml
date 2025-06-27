@@ -4,6 +4,9 @@ version: '3.8'
 services:
   web:
     build: .
+    env_file:
+      - .env
+    restart: unless-stopped
     command: "uvicorn main:app --reload --host 0.0.0.0 --port 8000"
     ports:
       - "8000:8000"
@@ -11,7 +14,8 @@ services:
       - .:/app
     environment:
       - PYTHONUNBUFFERED=1
-
+      - PUID=0
+      - PGID=0
 
 
 

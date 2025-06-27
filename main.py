@@ -1,6 +1,10 @@
 from fastapi import FastAPI, UploadFile, File
+from uploadIMGRoute import uploadIMG
 
 app = FastAPI()
+
+app.include_router(uploadIMG)
+
 
 @app.get("/")
 def root():
@@ -17,3 +21,5 @@ def upload(file: UploadFile = File(...)):
         return {"message": "File saved successfully"}
     except Exception as e:
         return {"message": e.args}
+    
+
