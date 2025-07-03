@@ -59,9 +59,11 @@ class ChequeInfo:
             tmp.append(r.json()["data"]["json"]["items"][i]["quantity"])
             tmp.append(r.json()["data"]["json"]["items"][i]["price"]/100.0)
             tmp.append(tmp[2]*tmp[3])
+            self.__dictProducts["items"].append( { k:v for (k,v) in zip(self.__columnsName, tmp)}  )
+            tmp = []
         
         #Update __dictProducts
-        self.__dictProducts["items"].append( { k:v for (k,v) in zip(self.__columnsName, tmp)}  )
+    
         self.__dictProducts["data"] = r.json()["data"]["json"]["dateTime"]
         
 

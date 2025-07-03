@@ -39,10 +39,11 @@ class AutoFillLLM:
                 "required": ["categoria"],
             },
         },
+        temperature=0.2
         )
 
         print(response["choices"][0]["message"]["content"][0])
-        return (response["choices"][0]["message"]["content"])
+        return json.loads(response["choices"][0]["message"]["content"])
     
     def getProductType(self,listProducts):
         response = self.__llm.create_chat_completion(
@@ -56,6 +57,7 @@ class AutoFillLLM:
                                     то поставь: прочее/услуга"
                     
             },
+            
             #{"role": "user", "content": listProducts},
         ],
         response_format={
@@ -66,8 +68,9 @@ class AutoFillLLM:
                 "required": ["productType"],
             },
         },
+        temperature=0.2
         )
 
 
 
-        return response["choices"][0]["message"]["content"]
+        return json.loads(response["choices"][0]["message"]["content"])
