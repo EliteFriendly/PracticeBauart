@@ -9,14 +9,10 @@ class ChequeInfo:
     __websiteAPI = os.getenv("API") #API to get info from cheques from website
 
 
-    __columnsName = ("name","productType","quantity","price","sum","data",)
+    __columnsName = ("name","productType","quantity","price","sum",)
     __dictProducts = {
-        "name":[],
-        "productType":[],
-        "quantity":[],
-        "price":[],
-        "sum":[],
-        "data":[],
+        "items":[],
+        "data":""
     } 
     '''
     price in next format: 300.50, where 300 its rubles, and 50 its pennies.
@@ -55,28 +51,18 @@ class ChequeInfo:
         
         
         #Get info from dict, for future update __dictProducts
-        namesArr = self.__dictProducts["name"]
-        productTypesArr = self.__dictProducts["productType"]
-        quantityArr = self.__dictProducts["quantity"]
-        priceArr = self.__dictProducts["price"]
-        sumArr = self.__dictProducts["sum"]
-        datasArr = self.__dictProducts["data"]
-        
-        for i in range(len(r.json()["data"]["json"]["items"])):# take only items/products from .json and set its into a DataFrame
-            namesArr.append(r.json()["data"]["json"]["items"][i]["name"])
-            productTypesArr.append("None")
-            quantityArr.append(r.json()["data"]["json"]["items"][i]["quantity"])
-            priceArr.append(r.json()["data"]["json"]["items"][i]["price"]/100.0)
-            sumArr.append(quantityArr[len(quantityArr)-1]*priceArr[len(priceArr)-1])
-            datasArr.append(r.json()["data"]["json"]["dateTime"])
+       
+        tmp = []
+        for i in range(len(r.json()["data"]["json"]["items"])):# take only items/products from .json and set its into a tmp array
+            tmp.append(r.json()["data"]["json"]["items"][i]["name"])
+            tmp.append("None")
+            tmp.append(r.json()["data"]["json"]["items"][i]["quantity"])
+            tmp.append(r.json()["data"]["json"]["items"][i]["price"]/100.0)
+            tmp.append(tmp[2]*tmp[3])
         
         #Update __dictProducts
-        self.__dictProducts["name"] = namesArr
-        self.__dictProducts["productType"] = productTypesArr
-        self.__dictProducts["quantity"] = quantityArr
-        self.__dictProducts["price"] = priceArr
-        self.__dictProducts["sum"] = sumArr
-        self.__dictProducts["data"] = datasArr
+        self.__dictProducts["items"].append( { k:v for (k,v) in zip(self.__columnsName, tmp)}  )
+        self.__dictProducts["data"] = r.json()["data"]["json"]["dateTime"]
         
 
         
