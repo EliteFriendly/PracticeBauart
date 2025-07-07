@@ -3,7 +3,8 @@ import os
 
 
 
-class ChequeInfo:
+
+class ChequeInfo():
     __goodIMGExtension = ("bmp", "gif", "jpeg", "png", "tiff", "pdf",)
     __token = os.getenv("TOKEN") # token from website: https://proverkacheka.com 
     __websiteAPI = os.getenv("API") #API to get info from cheques from website

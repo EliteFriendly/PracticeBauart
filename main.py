@@ -11,13 +11,7 @@ LLMproba = AutoFillLLM()
 
 @app.get("/")
 def root():
-
-    category = LLMproba.getCategory(listProducts=["Яблоко"])
-     
-   
-    
-    print(category.items())
-    return {category}
+    return {"Main Page"}
 
 
 @app.post("/testAll")
@@ -38,15 +32,5 @@ def  sendToChequeInfo(file: UploadFile = File(...)):
     return [category,listpr]
 
 
-@app.post("/upload")
-def upload(file: UploadFile = File(...)):
-    try:
-        file_path = f"test-files/{file.filename}"
-        with open(file_path, "wb") as f:
-            f.write(file.file.read())
-        
-        return {"message": "File saved successfully"}
-    except Exception as e:
-        return {"message": e.args}
     
 
