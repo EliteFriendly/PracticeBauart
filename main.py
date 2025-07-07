@@ -2,7 +2,6 @@ from fastapi import FastAPI, UploadFile, File
 from uploadIMGRoute import uploadIMG
 from autoFillLLM import AutoFillLLM
 from ChequeInfo import ChequeInfo
-import json
 
 app = FastAPI()
 QRreader = ChequeInfo()
@@ -20,7 +19,6 @@ def  sendToChequeInfo(file: UploadFile = File(...)):
     with open(file_path, "wb") as tmpF:
         tmpF.write(file.file.read())
     QRreader.setQRImage(fileName=file_path)
-    listProducts=QRreader.getListProducts()
     positions =[]
     for i in range(len(QRreader.getListProducts()["items"])):
         positions.append(QRreader.getListProducts()["items"][i]["name"])
@@ -28,7 +26,6 @@ def  sendToChequeInfo(file: UploadFile = File(...)):
    
     category=LLMproba.getCategory(positions)
     listpr=LLMproba.getProductType(positions)
-    #return listProducts
     return [category,listpr]
 
 

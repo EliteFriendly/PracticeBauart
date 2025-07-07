@@ -13,6 +13,8 @@ class AutoFillLLM:
 
 
     def getCategory(self,listProducts):
+
+        #Set initional information in LLM for distribution of categories
         response = self.__llm.create_chat_completion(
         messages=[
             {
@@ -29,7 +31,7 @@ class AutoFillLLM:
                                     то поставь доминирующию категорию расходов которых больше всего"
                     
             },
-            #{"role": "user", "content": listProducts},
+        
         ],
         response_format={
             "type": "json_object",
@@ -39,13 +41,15 @@ class AutoFillLLM:
                 "required": ["categoria"],
             },
         },
-        temperature=0.2
+        temperature=0.2#For small random from LLM
         )
 
         print(response["choices"][0]["message"]["content"][0])
         return json.loads(response["choices"][0]["message"]["content"])
     
     def getProductType(self,listProducts):
+
+        #Set initional information in LLM for distribution of productType
         response = self.__llm.create_chat_completion(
         messages=[
             {
@@ -57,8 +61,6 @@ class AutoFillLLM:
                                     то поставь: прочее/услуга"
                     
             },
-            
-            #{"role": "user", "content": listProducts},
         ],
         response_format={
             "type": "json_object",
