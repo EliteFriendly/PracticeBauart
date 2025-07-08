@@ -16,7 +16,7 @@ class ChequeInfo():
         "data":""
     } 
     '''
-    price in next format: 300.50, where 300 its rubles, and 50 its pennies.
+    price in next format: 30050, where 300 its rubles, and 50 its pennies.
     data in next format: YYYY-MM-DDTHH:MM:SS, where T - special symbol from API
     productType: can be type from productType.txt
     '''
@@ -58,7 +58,7 @@ class ChequeInfo():
             tmp.append(r.json()["data"]["json"]["items"][i]["name"])
             tmp.append("None")
             tmp.append(r.json()["data"]["json"]["items"][i]["quantity"])
-            tmp.append(r.json()["data"]["json"]["items"][i]["price"]/100.0)
+            tmp.append(r.json()["data"]["json"]["items"][i]["price"])
             tmp.append(tmp[2]*tmp[3])
             self.__dictProducts["items"].append( { k:v for (k,v) in zip(self.__columnsName, tmp)}  )
             tmp = []
@@ -70,6 +70,6 @@ class ChequeInfo():
 
         
     
-    def getListProducts(self):
+    def getDistProducts(self):
         return self.__dictProducts
             
