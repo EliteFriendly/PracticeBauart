@@ -1,6 +1,13 @@
-from fastapi import FastAPI, UploadFile, File, APIRouter
+from fastapi import FastAPI, UploadFile, File, APIRouter,HTTPException
+from starlette.middleware.base import BaseHTTPMiddleware
 from ChequeInfo import ChequeInfo
 from pydantic import BaseModel, Field
+
+
+
+uploadIMG = APIRouter(prefix = "/api/qr_put",tags=["Send this into a API wich take items from cheque"])
+QRreader = ChequeInfo()
+
 
 
 #Thing which uses to send info in ChequeInfo
@@ -11,11 +18,10 @@ class ReqImgLLM(BaseModel):
 
 
 
-uploadIMG = APIRouter(prefix = "/api/autofill_llm",tags=["Send this into a AutoFillLLM"])
-QRreader = ChequeInfo()
+
 
 @uploadIMG.post("/uploadIMG")
-def  sendToChequeInfo(file:UploadFile, reqImgLLM: ReqImgLLM):
+def  sendToChequeInfo(file:UploadFile):
     #Save file
     file_path = f"test-files/{file.filename}"
     with open(file_path, "wb") as tmpF:
@@ -25,7 +31,8 @@ def  sendToChequeInfo(file:UploadFile, reqImgLLM: ReqImgLLM):
     QRreader.setQRImage(fileName=file_path)
     return {"message": "File saved successfully"}
     
+
 @uploadIMG.get("/showProductsList")
 def getProductList():
-    return QRreader.getDictProducts(QRreader)
+    return QRreader.getDistProducts()
 

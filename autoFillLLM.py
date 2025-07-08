@@ -2,9 +2,6 @@ from llama_cpp import Llama
 import json
 
 
-
-
-
 class AutoFillLLM:
     __llm = Llama.from_pretrained(
        	repo_id="bartowski/Ministral-8B-Instruct-2410-GGUF",
@@ -12,7 +9,17 @@ class AutoFillLLM:
     )
 
 
-    def getCategory(self,listProducts):
+    #Take name from all items in cheque
+    def __getItems(self,jsonImput):
+        productList = []
+        for i in range(len(jsonImput.items)):
+            productList.append(jsonImput.items[i]["name"])
+        return productList
+
+
+    def getCategory(self,jsonImput):
+    
+        listProducts = self.__getItems(jsonImput)#Get items from chequeInfo
 
         #Set initional information in LLM for distribution of categories
         response = self.__llm.create_chat_completion(
@@ -44,10 +51,12 @@ class AutoFillLLM:
         temperature=0.2#For small random from LLM
         )
 
-        print(response["choices"][0]["message"]["content"][0])
+        
         return json.loads(response["choices"][0]["message"]["content"])
     
-    def getProductType(self,listProducts):
+    def getProductType(self,jsonImput):
+
+        listProducts = self.__getItems(jsonImput)#Get items from chequeInfo
 
         #Set initional information in LLM for distribution of productType
         response = self.__llm.create_chat_completion(
@@ -73,6 +82,12 @@ class AutoFillLLM:
         temperature=0.2
         )
 
+        #Sometimes LLM distort the names of listItems, then take only values of keys
+        js = list(json.loads(response["choices"][0]["message"]["content"]).values())
+
+        #set productType in jsonImput
+        for i in range(len(listProducts)):
+            jsonImput.items[i]["productType"] = js[i]
 
 
-        return json.loads(response["choices"][0]["message"]["content"])
+        return jsonImput
