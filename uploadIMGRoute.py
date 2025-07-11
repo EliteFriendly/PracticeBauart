@@ -3,13 +3,14 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from ChequeInfo import ChequeInfo
 from pydantic import BaseModel, Field
 
+#TODO Такая же ситуация с модулем, продумай структуру, перенеси в другую папку
 
 
 uploadIMG = APIRouter(prefix = "/api/qr_put",tags=["Send this into a API wich take items from cheque"])
 QRreader = ChequeInfo()
 
 
-
+#TODO Так же отдельный файл с моделями для валидации
 #Thing which uses to send info in ChequeInfo
 class ReqImgLLM(BaseModel):
     userToken: str = Field(description="Token?")
@@ -19,7 +20,8 @@ class ReqImgLLM(BaseModel):
 
 
 
-
+#TODO Так же перенеси в отдельный файл и добавь middleware для проверки токена, и наследуй его в класс
+#   кстати не факт что такая функция нужна после того как она в основной бэк интегрирована
 @uploadIMG.post("/uploadIMG")
 def  sendToChequeInfo(file:UploadFile):
     #Save file
