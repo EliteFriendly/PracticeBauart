@@ -9,7 +9,7 @@ app = FastAPI()
 app.include_router(uploadIMG)
 app.include_router(productsLLM)
 #LLMproba = AutoFillLLM()
-
+# TODO Лишний код и коментарии удалить, так же с импортами
 
 @app.get("/")
 def root():

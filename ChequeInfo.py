@@ -3,7 +3,8 @@ import os
 
 
 
-
+#TODO Можешь оставить, но в целом если уже есть перенос функционала на бэк,
+#   можно убрать, и если разнесешь по папкам, то это будет отдельно от LLM
 class ChequeInfo():
     __goodIMGExtension = ("bmp", "gif", "jpeg", "png", "tiff", "pdf",)
     __token = os.getenv("TOKEN") # token from website: https://proverkacheka.com 
@@ -52,7 +53,10 @@ class ChequeInfo():
         
         
         #Get info from dict, for future update __dictProducts
-       
+       #TODO Ну тут магия происходит, можно 100% обход оптимизировать,
+       #    сделай предполучение данных до того как ты будешь их обходить
+       #    Так же можешь это все завернуть в tuple после получения из json
+       #    (это имею ввиду при предварительном определении до цикла)    
         tmp = []
         for i in range(len(r.json()["data"]["json"]["items"])):# take only items/products from .json and set its into a tmp array
             tmp.append(r.json()["data"]["json"]["items"][i]["name"])

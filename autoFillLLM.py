@@ -16,7 +16,7 @@ class AutoFillLLM:
             productList.append(jsonImput.items[i]["name"])
         return productList
 
-
+# TODO Тут собственно так же, о чем говорил про структуру, и про сообщения и менеджер промтов
     def getCategory(self,jsonImput):
     
         listProducts = self.__getItems(jsonImput)#Get items from chequeInfo
